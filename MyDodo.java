@@ -148,4 +148,25 @@ public class MyDodo extends Dodo
             printCoordinatesOfEgg( mostValuable );
         }
     }
+    /**
+     * Calculates the average value of all eggs in the given list using a foreach.
+     */
+    public double calculateAverageValue( List<SurpriseEgg> listOfEggs ) {
+        if ( listOfEggs.isEmpty() ) {
+            return 0.0;
+        }
+        int totaal = 0;
+        for ( SurpriseEgg egg : listOfEggs ) {
+            totaal = totaal + egg.getValue();
+        }
+        return (double) totaal / listOfEggs.size();
+    }
+    /**
+     * Fills the world with 10 surprise eggs and prints the average egg value.
+     */
+    public void makeListOfSurpriseEggsAndPrintAverageValue() {
+        List<SurpriseEgg> listOfSurpriseEggs = makeListOfSurpriseEggs();
+        double average = calculateAverageValue( listOfSurpriseEggs );
+        System.out.println( "Average value: " + average );
+    }
 }
