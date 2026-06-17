@@ -94,4 +94,26 @@ public class MyDodo extends Dodo
     public void practiceWithListsOfSurpriseEggs( ){
         List<SurpriseEgg>  listOfEgss = SurpriseEgg.generateListOfSurpriseEggs( 12, getWorld() );
     }
+    /**
+     * Makes a list of 10 surprise eggs by calling the
+     * generateListOfSurpriseEggs method in SurpriseEgg.
+     */
+    public List<SurpriseEgg> makeListOfSurpriseEggs() {
+        return SurpriseEgg.generateListOfSurpriseEggs( 10, getWorld() );
+    }
+    /**
+     * Prints the coordinates of a given egg.
+     */
+    public void printCoordinatesOfEgg( Egg egg ) {
+        System.out.println( "Egg at (" + egg.getX() + ", " + egg.getY() + ")" );
+    }
+    /**
+     * Makes a list of 10 surprise eggs and prints the coordinates of each egg.
+     */
+    public void makeListOfSurpriseEggsAndPrintCoordinates() {
+        List<SurpriseEgg> listOfSurpriseEggs = makeListOfSurpriseEggs();
+        for ( SurpriseEgg egg : listOfSurpriseEggs ) {
+            printCoordinatesOfEgg( egg );
+        }
+    }
 }
