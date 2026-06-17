@@ -102,10 +102,11 @@ public class MyDodo extends Dodo
         return SurpriseEgg.generateListOfSurpriseEggs( 10, getWorld() );
     }
     /**
-     * Prints the coordinates of a given egg.
+     * Prints the coordinates and the value of a given egg.
      */
     public void printCoordinatesOfEgg( Egg egg ) {
-        System.out.println( "Egg at (" + egg.getX() + ", " + egg.getY() + ")" );
+        System.out.println( "Egg at (" + egg.getX() + ", " + egg.getY()
+            + ") with value " + egg.getValue() );
     }
     /**
      * Makes a list of 10 surprise eggs and prints the coordinates of each egg.
@@ -114,6 +115,37 @@ public class MyDodo extends Dodo
         List<SurpriseEgg> listOfSurpriseEggs = makeListOfSurpriseEggs();
         for ( SurpriseEgg egg : listOfSurpriseEggs ) {
             printCoordinatesOfEgg( egg );
+        }
+    }
+    /**
+     * Determines which egg in the list is the most valuable.
+     */
+    public SurpriseEgg findMostValuableEgg( List<SurpriseEgg> listOfEggs ) {
+        if ( listOfEggs.isEmpty() ) {
+            return null;
+        }
+        SurpriseEgg mostValuable = listOfEggs.get( 0 );
+        for ( SurpriseEgg egg : listOfEggs ) {
+            if ( egg.getValue() > mostValuable.getValue() ) {
+                mostValuable = egg;
+            }
+        }
+        return mostValuable;
+    }
+    /**
+     * Fills the world with 10 surprise eggs, prints the coordinates and value
+     * of every egg, and then determines and prints the most valuable egg.
+     */
+    public void findAndPrintMostValuableEgg() {
+        List<SurpriseEgg> listOfSurpriseEggs = makeListOfSurpriseEggs();
+        // print coordinates and value of all eggs to check the result
+        for ( SurpriseEgg egg : listOfSurpriseEggs ) {
+            printCoordinatesOfEgg( egg );
+        }
+        SurpriseEgg mostValuable = findMostValuableEgg( listOfSurpriseEggs );
+        if ( mostValuable != null ) {
+            System.out.println( "Most valuable egg:" );
+            printCoordinatesOfEgg( mostValuable );
         }
     }
 }
