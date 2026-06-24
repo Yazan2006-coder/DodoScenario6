@@ -169,4 +169,20 @@ public class MyDodo extends Dodo
         double average = calculateAverageValue( listOfSurpriseEggs );
         System.out.println( "Average value: " + average );
     }
+
+    /**
+     * Moves the dodo in random directions for at most MAXSTEPS steps.
+     * Each step a random direction is chosen, the dodo only steps when it can
+     * move, so it never walks into the border of the world or into a fence.
+     */
+    public void moveRandomly() {
+        int myNrOfStepsTaken = 0;
+        while ( myNrOfStepsTaken < Mauritius.MAXSTEPS ) {
+            setDirection( randomDirection() );
+            if ( canMove() ) {
+                step();
+            }
+            myNrOfStepsTaken++;
+        }
+    }
 }
