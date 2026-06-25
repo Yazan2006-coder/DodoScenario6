@@ -177,6 +177,7 @@ public class MyDodo extends Dodo
      */
     public void moveRandomly() {
         int myNrOfStepsTaken = 0;
+        // show the full number of moves left at the start
         getScore( Mauritius.MAXSTEPS - myNrOfStepsTaken, 0 );
         while ( myNrOfStepsTaken < Mauritius.MAXSTEPS ) {
             setDirection( randomDirection() );
@@ -184,6 +185,7 @@ public class MyDodo extends Dodo
                 step();
             }
             myNrOfStepsTaken++;
+            // a value has changed, so update the scoreboard right away
             getScore( Mauritius.MAXSTEPS - myNrOfStepsTaken, 0 );
         }
     }
