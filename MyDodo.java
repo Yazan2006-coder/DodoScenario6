@@ -169,7 +169,6 @@ public class MyDodo extends Dodo
         double average = calculateAverageValue( listOfSurpriseEggs );
         System.out.println( "Average value: " + average );
     }
-
     /**
      * Moves the dodo in random directions for at most MAXSTEPS steps.
      * Each step a random direction is chosen, the dodo only steps when it can
@@ -194,5 +193,69 @@ public class MyDodo extends Dodo
      */
     public void getScore( int score1, int score2 ) {
         ( (Mauritius) getWorld() ).updateScore( score1, score2 );
+    }
+    /**
+     * Walks Mimi to the nearest egg in the world and picks it up.
+     */
+    public void pickUpNearestEggInList() {
+        // get a list of eggs
+        List<Egg> listOfEggs = getListOfEggsInWorld();
+        if ( listOfEggs.isEmpty() ) {
+            return;
+        }
+        // determine destination of nearest egg
+        Egg nearestEgg = findNearestEgg( listOfEggs );
+        // walk to destination
+        walkTo( nearestEgg.getX(), nearestEgg.getY() );
+        // pick up egg
+        pickUpEgg();
+    }
+    /**
+     * Determines which egg in the list is closest to the dodo,
+     * using the Manhattan distance (number of steps needed).
+     */
+    public Egg findNearestEgg( List<Egg> listOfEggs ) {
+        if ( listOfEggs.isEmpty() ) {
+            return null;
+        }
+        Egg nearest = listOfEggs.get( 0 );
+        for ( Egg egg : listOfEggs ) {
+            if ( distanceTo( egg ) < distanceTo( nearest ) ) {
+                nearest = egg;
+            }
+        }
+        return nearest;
+    }
+    /**
+     * Calculates the Manhattan distance between the dodo and a given egg.
+     */
+    public int distanceTo( Egg egg ) {
+        int dx = Math.abs( egg.getX() - getX() );
+        int dy = Math.abs( egg.getY() - getY() );
+        return dx + dy;
+    }
+    /**
+     * Walks the dodo to the given coordinates, first horizontally and
+     * then vertically.
+     */
+    public void walkTo( int targetX, int targetY ) {
+        // walk horizontally
+        while ( getX() != targetX ) {
+            if ( getX() < targetX ) {
+                setDirection( EAST );
+            } else {
+                setDirection( WEST );
+            }
+            step();
+        }
+        // walk vertically
+        while ( getY() != targetY ) {
+            if ( getY() < targetY ) {
+                setDirection( SOUTH );
+            } else {
+                setDirection( NORTH );
+            }
+            step();
+        }
     }
 }
