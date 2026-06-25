@@ -177,12 +177,20 @@ public class MyDodo extends Dodo
      */
     public void moveRandomly() {
         int myNrOfStepsTaken = 0;
+        getScore( Mauritius.MAXSTEPS - myNrOfStepsTaken, 0 );
         while ( myNrOfStepsTaken < Mauritius.MAXSTEPS ) {
             setDirection( randomDirection() );
             if ( canMove() ) {
                 step();
             }
             myNrOfStepsTaken++;
+            getScore( Mauritius.MAXSTEPS - myNrOfStepsTaken, 0 );
         }
+    }
+    /**
+     * Adjusts the scoreboard with the two given values.
+     */
+    public void getScore( int score1, int score2 ) {
+        ( (Mauritius) getWorld() ).updateScore( score1, score2 );
     }
 }
