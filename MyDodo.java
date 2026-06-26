@@ -10,6 +10,10 @@ import java.util.ArrayList;
  */
 public class MyDodo extends Dodo
 {
+    // keeps track of how many steps Mimi has taken during the race
+    private int myNrOfStepsTaken = 0;
+    // keeps track of the score points
+    private int myScore = 0;
 
     public MyDodo() {
         super( EAST );
@@ -257,5 +261,91 @@ public class MyDodo extends Dodo
             }
             step();
         }
+    }
+    /**
+     * as long as there are steps and eggs left, repeatedly pick
+     * the egg with the best ratio of value per number of steps needed
+     * (so a far-away egg only wins if it is worth more), walk to it and pick it
+     * up. Eggs that can no longer be reached within the remaining steps are
+     * skipped.
+     */
+    public void runDodoRace() {
+        myNrOfStepsTaken = 0;
+        myScore = 0;
+        updateScoreboard();
+        boolean keepGoing = true;
+        while ( keepGoing && myNrOfStepsTaken < Mauritius.MAXSTEPS ) {
+            List<Egg> listOfEggs = getListOfEggsInWorld();
+            Egg target = chooseBestEgg( listOfEggs );
+            if ( target == null ) {
+                // no egg is reachable within the remaining steps
+                keepGoing = false;
+            } else {
+                walkToCounting( target.getX(), target.getY() );
+                if ( onEgg() ) {
+                    Egg picked = pickUpEgg();
+                    myScore = myScore + picked.getValue();
+                    updateScoreboard();
+                }
+            }
+        }
+    }
+    /**
+     * Chooses the best egg to go for: the egg with the highest value per step,
+     * but only if it can still be reached within the remaining steps.
+     */
+    public Egg chooseBestEgg( List<Egg> listOfEggs ) {
+        int stepsLeft = Mauritius.MAXSTEPS - myNrOfStepsTaken;
+        Egg best = null;
+        double bestRatio = 0.0;
+        for ( Egg egg : listOfEggs ) {
+            int distance = distanceTo( egg );
+            if ( distance <= stepsLeft ) {
+                // value per step; distance 0 means we are already on the egg
+                double ratio = (double) egg.getValue() / Math.max( distance, 1 );
+                if ( best == null || ratio > bestRatio ) {
+                    best = egg;
+                    bestRatio = ratio;
+                }
+            }
+        }
+        return best;
+    }
+    /**
+     * Walks the dodo to the given coordinates (first horizontally, then
+     * vertically), counting every step and updating the scoreboard. Stops early
+     * when the maximum number of steps has been reached.
+     */
+    public void walkToCounting( int targetX, int targetY ) {
+        while ( getX() != targetX && myNrOfStepsTaken < Mauritius.MAXSTEPS ) {
+            if ( getX() < targetX ) {
+                setDirection( EAST );
+            } else {
+                setDirection( WEST );
+            }
+            stepAndCount();
+        }
+        while ( getY() != targetY && myNrOfStepsTaken < Mauritius.MAXSTEPS ) {
+            if ( getY() < targetY ) {
+                setDirection( SOUTH );
+            } else {
+                setDirection( NORTH );
+            }
+            stepAndCount();
+        }
+    }
+    /**
+     * Takes a single step, counts it and updates the scoreboard.
+     */
+    private void stepAndCount() {
+        step();
+        myNrOfStepsTaken++;
+        updateScoreboard();
+    }
+    /**
+     * Updates the scoreboard with the number of steps left and the current score.
+     */
+    private void updateScoreboard() {
+        getScore( Mauritius.MAXSTEPS - myNrOfStepsTaken, myScore );
     }
 }
